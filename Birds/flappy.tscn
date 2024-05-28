@@ -1,0 +1,127 @@
+[gd_scene load_steps=16 format=3 uid="uid://ca2lalgbrq70d"]
+
+[ext_resource type="Script" path="res://Birds/flappy.gd" id="1_elndy"]
+[ext_resource type="Texture2D" uid="uid://cbfut5eyvmurk" path="res://flappy-bird-assets-master/sprites/yellowbird-midflap.png" id="1_oucf7"]
+[ext_resource type="Texture2D" uid="uid://75oiujvpvaa8" path="res://flappy-bird-assets-master/sprites/yellowbird-downflap.png" id="2_rsubb"]
+[ext_resource type="Texture2D" uid="uid://db58yl12m61wv" path="res://flappy-bird-assets-master/sprites/yellowbird-upflap.png" id="3_30w0k"]
+[ext_resource type="AudioStream" uid="uid://dc6osy1b4haau" path="res://flappy-bird-assets-master/audio/wing.wav" id="5_o20m5"]
+[ext_resource type="AudioStream" uid="uid://c1uiljww0tdch" path="res://flappy-bird-assets-master/audio/die.wav" id="6_lyhd1"]
+[ext_resource type="AudioStream" uid="uid://cni0m2c1kwvu" path="res://flappy-bird-assets-master/audio/hit.wav" id="7_dy4na"]
+[ext_resource type="AudioStream" uid="uid://brb1r10lae3ev" path="res://flappy-bird-assets-master/audio/point.wav" id="8_346d8"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5xpcg"]
+radius = 8.14815
+height = 22.2222
+
+[sub_resource type="Animation" id="Animation_s5kal"]
+resource_name = "Dead"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlappySprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_oucf7")]
+}
+
+[sub_resource type="Animation" id="Animation_fm0ej"]
+resource_name = "Fly"
+length = 0.2
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlappySprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("2_rsubb"), ExtResource("1_oucf7"), ExtResource("3_30w0k")]
+}
+
+[sub_resource type="Animation" id="Animation_husqb"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlappySprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("1_oucf7")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t63nd"]
+_data = {
+"Dead": SubResource("Animation_s5kal"),
+"Fly": SubResource("Animation_fm0ej"),
+"RESET": SubResource("Animation_husqb")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_00uyt"]
+radius = 8.88889
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5lhq1"]
+radius = 11.1111
+height = 32.5926
+
+[node name="Flappy" type="CharacterBody2D"]
+z_index = 1
+scale = Vector2(1.35, 1.35)
+collision_layer = 0
+collision_mask = 5
+motion_mode = 1
+script = ExtResource("1_elndy")
+jump = 360.0
+
+[node name="FlappySprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_oucf7")
+
+[node name="CollissionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_5xpcg")
+
+[node name="FlappyAnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_t63nd")
+}
+autoplay = "Fly"
+
+[node name="PointCollect2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PointCollect2D"]
+shape = SubResource("CircleShape2D_00uyt")
+
+[node name="HurtboxArea2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtboxArea2D"]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_5lhq1")
+
+[node name="JumpAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_o20m5")
+
+[node name="DeadAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_lyhd1")
+
+[node name="HitAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_dy4na")
+
+[node name="PointAudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_346d8")
+
+[connection signal="area_entered" from="PointCollect2D" to="." method="_on_point_collect_2d_area_entered"]
+[connection signal="body_entered" from="HurtboxArea2D" to="." method="_on_hurtbox_area_2d_body_entered"]

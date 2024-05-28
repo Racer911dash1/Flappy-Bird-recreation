@@ -1,0 +1,62 @@
+[gd_scene load_steps=6 format=3 uid="uid://cl5n85h3rjakq"]
+
+[ext_resource type="Script" path="res://Main/pipes.gd" id="1_yqekr"]
+[ext_resource type="Texture2D" uid="uid://2yer1nepab25" path="res://flappy-bird-assets-master/sprites/pipe-green.png" id="2_ehnmt"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3affq"]
+size = Vector2(51.8518, 319.63)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3dqrp"]
+size = Vector2(51.8518, 319.63)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o3r5j"]
+size = Vector2(14, 106)
+
+[node name="Pipes" type="Node2D"]
+z_index = -1
+script = ExtResource("1_yqekr")
+
+[node name="TopPipeBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, -50)
+rotation = 3.14159
+scale = Vector2(1.35, 1.35)
+collision_layer = 2
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="TopPipeCollisionShape2D" type="CollisionShape2D" parent="TopPipeBody2D"]
+position = Vector2(9.06602e-07, 160.185)
+shape = SubResource("RectangleShape2D_3affq")
+
+[node name="TopPipeSprite2D" type="Sprite2D" parent="TopPipeBody2D"]
+position = Vector2(0, -3.8147e-06)
+texture = ExtResource("2_ehnmt")
+offset = Vector2(0, 160)
+
+[node name="BottomPipeBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 50)
+scale = Vector2(1.35, 1.35)
+collision_layer = 2
+collision_mask = 0
+metadata/_edit_group_ = true
+
+[node name="BottomPipeCollisionShape2D" type="CollisionShape2D" parent="BottomPipeBody2D"]
+position = Vector2(0, 160.185)
+shape = SubResource("RectangleShape2D_3dqrp")
+
+[node name="BottomPipeSprite2D" type="Sprite2D" parent="BottomPipeBody2D"]
+texture = ExtResource("2_ehnmt")
+offset = Vector2(0, 160)
+
+[node name="PointArea2D" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="PointCollisionShape2D" type="CollisionShape2D" parent="PointArea2D"]
+position = Vector2(28, 0)
+shape = SubResource("RectangleShape2D_o3r5j")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+scale = Vector2(4.9, 49.6)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

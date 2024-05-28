@@ -1,0 +1,174 @@
+[gd_scene load_steps=16 format=3 uid="uid://la1e8p4kc18n"]
+
+[ext_resource type="PackedScene" uid="uid://ca2lalgbrq70d" path="res://Birds/flappy.tscn" id="1_t4doc"]
+[ext_resource type="Script" path="res://Main/main.gd" id="1_vo1c7"]
+[ext_resource type="FontFile" uid="uid://34kboeg68d5v" path="res://flappy-bird-font.ttf" id="2_61ubw"]
+[ext_resource type="Texture2D" uid="uid://bhoic0isavera" path="res://flappy-bird-assets-master/sprites/background-day.png" id="2_dys0v"]
+[ext_resource type="Texture2D" uid="uid://cdoc4y0wy72qm" path="res://flappy-bird-assets-master/sprites/gameover.png" id="2_oh37o"]
+[ext_resource type="Texture2D" uid="uid://b6mki7yc6b4q3" path="res://flappy-bird-assets-master/sprites/redbird-midflap.png" id="3_43v5o"]
+[ext_resource type="Texture2D" uid="uid://ba6nvp0qsvh8c" path="res://flappy-bird-assets-master/sprites/background-night.png" id="3_t7nf8"]
+[ext_resource type="Texture2D" uid="uid://dvws2fsjr5e3m" path="res://flappy-bird-assets-master/sprites/base.png" id="4_vggwh"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_prf0d"]
+load_path = "res://.godot/imported/message.png-5236ebf29dc803b4ca9530f24fe80449.ctex"
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_vhv4v"]
+normal = Vector2(0, 1)
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_ajff7"]
+
+[sub_resource type="Animation" id="Animation_2yh1r"]
+resource_name = "Flappy_Intro_Up_Down"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Flappy:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(72, 217), Vector2(72, 167)]
+}
+
+[sub_resource type="Animation" id="Animation_yoagf"]
+resource_name = "HitEffect"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/HitColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0.784314), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_j22ro"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CanvasLayer/HitColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Flappy:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(72, 217)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2a8tu"]
+_data = {
+"Flappy_Intro_Up_Down": SubResource("Animation_2yh1r"),
+"HitEffect": SubResource("Animation_yoagf"),
+"RESET": SubResource("Animation_j22ro")
+}
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_vo1c7")
+pipe_spawn_height = 120.0
+background_sprites = [ExtResource("2_dys0v"), ExtResource("3_t7nf8")]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="PointCounterLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_61ubw")
+theme_override_font_sizes/font_size = 32
+text = "0"
+horizontal_alignment = 1
+
+[node name="FrontSprite2D" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(144, 256)
+scale = Vector2(1.35, 1.35)
+texture = SubResource("CompressedTexture2D_prf0d")
+
+[node name="Gameover" type="Sprite2D" parent="CanvasLayer"]
+visible = false
+position = Vector2(144, 85)
+scale = Vector2(1.35, 1.35)
+texture = ExtResource("2_oh37o")
+
+[node name="HitColorRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
+offset_right = 288.0
+offset_bottom = 512.0
+
+[node name="TextureButton" type="TextureButton" parent="CanvasLayer"]
+offset_right = 34.0
+offset_bottom = 32.0
+texture_normal = ExtResource("3_43v5o")
+texture_pressed = ExtResource("3_43v5o")
+texture_hover = ExtResource("3_43v5o")
+texture_disabled = ExtResource("3_43v5o")
+texture_focused = ExtResource("3_43v5o")
+
+[node name="Background2D" type="Sprite2D" parent="."]
+z_index = -5
+position = Vector2(144, 256)
+texture = ExtResource("2_dys0v")
+
+[node name="Flappy" parent="." instance=ExtResource("1_t4doc")]
+position = Vector2(72, 217)
+
+[node name="TopWorldBoundary" type="StaticBody2D" parent="."]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopWorldBoundary"]
+position = Vector2(155, -68)
+shape = SubResource("WorldBoundaryShape2D_vhv4v")
+debug_color = Color(0.592157, 0.372549, 1, 1)
+
+[node name="BottomWorldBoundary" type="StaticBody2D" parent="."]
+position = Vector2(144, 424)
+collision_layer = 3
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWorldBoundary"]
+shape = SubResource("WorldBoundaryShape2D_ajff7")
+debug_color = Color(0.610631, 0.362104, 1, 1)
+
+[node name="FloorSprite2D" type="Sprite2D" parent="BottomWorldBoundary"]
+position = Vector2(-144, 0)
+texture = ExtResource("4_vggwh")
+centered = false
+metadata/_edit_group_ = true
+
+[node name="PipeSpawnTimer" type="Timer" parent="."]
+wait_time = 1.4
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2a8tu")
+}
+
+[connection signal="pressed" from="CanvasLayer/TextureButton" to="." method="_on_texture_button_pressed"]
+[connection signal="hit" from="Flappy" to="." method="_on_flappy_hit"]
+[connection signal="pipe_passed" from="Flappy" to="." method="_on_flappy_pipe_passed"]
+[connection signal="timeout" from="PipeSpawnTimer" to="." method="_on_pipe_spawn_timer_timeout"]

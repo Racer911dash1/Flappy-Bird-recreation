@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://y716wpaif8po"]
+
+[ext_resource type="Script" path="res://Audio/Sounds.gd" id="1_uxrkh"]
+[ext_resource type="AudioStream" uid="uid://dc6osy1b4haau" path="res://flappy-bird-assets-master/audio/wing.wav" id="2_3sndd"]
+[ext_resource type="AudioStream" uid="uid://c1uiljww0tdch" path="res://flappy-bird-assets-master/audio/die.wav" id="3_0t1cn"]
+
+[node name="Sounds" type="Node"]
+script = ExtResource("1_uxrkh")
+jump = ExtResource("2_3sndd")
+dead = ExtResource("3_0t1cn")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
