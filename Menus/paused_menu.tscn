@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d3da0iypwtgyl"]
 
+[ext_resource type="Script" path="res://Menus/paused_menu.gd" id="1_7s3qj"]
 [ext_resource type="Texture2D" uid="uid://bhoic0isavera" path="res://flappy-bird-assets-master/sprites/background-day.png" id="1_yfas5"]
-[ext_resource type="Script" path="res://Menus/Background-day.gd" id="2_14pxp"]
 [ext_resource type="Texture2D" uid="uid://b6mki7yc6b4q3" path="res://flappy-bird-assets-master/sprites/redbird-midflap.png" id="2_dhrp4"]
 
 [node name="PausedMenu" type="Control"]
@@ -11,11 +11,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_7s3qj")
 
 [node name="Background-day" type="Sprite2D" parent="."]
 position = Vector2(144, 256)
 texture = ExtResource("1_yfas5")
-script = ExtResource("2_14pxp")
 
 [node name="TextureButton" type="TextureButton" parent="."]
 layout_mode = 0
@@ -27,4 +27,4 @@ texture_hover = ExtResource("2_dhrp4")
 texture_disabled = ExtResource("2_dhrp4")
 texture_focused = ExtResource("2_dhrp4")
 
-[connection signal="pressed" from="TextureButton" to="Background-day" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="TextureButton" to="." method="_on_texture_button_pressed"]
