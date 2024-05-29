@@ -1,11 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://la1e8p4kc18n"]
+[gd_scene load_steps=15 format=3 uid="uid://la1e8p4kc18n"]
 
 [ext_resource type="PackedScene" uid="uid://ca2lalgbrq70d" path="res://Birds/flappy.tscn" id="1_t4doc"]
 [ext_resource type="Script" path="res://Main/main.gd" id="1_vo1c7"]
 [ext_resource type="FontFile" uid="uid://34kboeg68d5v" path="res://flappy-bird-font.ttf" id="2_61ubw"]
 [ext_resource type="Texture2D" uid="uid://bhoic0isavera" path="res://flappy-bird-assets-master/sprites/background-day.png" id="2_dys0v"]
 [ext_resource type="Texture2D" uid="uid://cdoc4y0wy72qm" path="res://flappy-bird-assets-master/sprites/gameover.png" id="2_oh37o"]
-[ext_resource type="Texture2D" uid="uid://b6mki7yc6b4q3" path="res://flappy-bird-assets-master/sprites/redbird-midflap.png" id="3_43v5o"]
 [ext_resource type="Texture2D" uid="uid://ba6nvp0qsvh8c" path="res://flappy-bird-assets-master/sprites/background-night.png" id="3_t7nf8"]
 [ext_resource type="Texture2D" uid="uid://dvws2fsjr5e3m" path="res://flappy-bird-assets-master/sprites/base.png" id="4_vggwh"]
 
@@ -120,19 +119,10 @@ visible = false
 offset_right = 288.0
 offset_bottom = 512.0
 
-[node name="TextureButton" type="TextureButton" parent="CanvasLayer"]
-offset_right = 34.0
-offset_bottom = 32.0
-texture_normal = ExtResource("3_43v5o")
-texture_pressed = ExtResource("3_43v5o")
-texture_hover = ExtResource("3_43v5o")
-texture_disabled = ExtResource("3_43v5o")
-texture_focused = ExtResource("3_43v5o")
-
 [node name="Background2D" type="Sprite2D" parent="."]
 z_index = -5
 position = Vector2(144, 256)
-texture = ExtResource("2_dys0v")
+texture = ExtResource("3_t7nf8")
 
 [node name="Flappy" parent="." instance=ExtResource("1_t4doc")]
 position = Vector2(72, 217)
@@ -168,7 +158,6 @@ libraries = {
 "": SubResource("AnimationLibrary_2a8tu")
 }
 
-[connection signal="pressed" from="CanvasLayer/TextureButton" to="." method="_on_texture_button_pressed"]
 [connection signal="hit" from="Flappy" to="." method="_on_flappy_hit"]
 [connection signal="pipe_passed" from="Flappy" to="." method="_on_flappy_pipe_passed"]
 [connection signal="timeout" from="PipeSpawnTimer" to="." method="_on_pipe_spawn_timer_timeout"]

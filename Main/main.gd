@@ -25,20 +25,8 @@ func _ready() -> void:
 	background_2d.texture = random_background 
 
 func _physics_process(delta: float) -> void:
-	if GameManager.flappy_died == false:
-		floor_sprite_2d.move_local_x(-160 * delta)
-		
-	if floor_sprite_2d.position.x <= -192:
-		floor_sprite_2d.position.x = -144
-		
-	if Input.is_action_just_pressed("jump") and timer_started == false:
-		timer_started = true
-		front_sprite_2d.hide()
-		pipe_spawn_timer.start()
-		animation_player.stop()
-		if reload_scene == true:
-			get_tree().reload_current_scene()
-			GameManager.flappy_died = false
+	move_floor(delta)
+	jump()
 
 func _on_pipe_spawn_timer_timeout() -> void:
 	var instance = PIPES.instantiate()
@@ -56,6 +44,20 @@ func _on_flappy_hit() -> void:
 	gameover.show()
 	timer_started = false
 	reload_scene = true
+	
+func jump():
+	if Input.is_action_just_pressed("jump") and timer_started == false:
+		timer_started = true
+		front_sprite_2d.hide()
+		pipe_spawn_timer.start()
+		animation_player.stop()
+		if reload_scene == true:
+			get_tree().reload_current_scene()
+			GameManager.flappy_died = false
 
-func _on_texture_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://Menus/paused_menu.tscn")
+func move_floor(delta):
+	if GameManager.flappy_died == false:
+		floor_sprite_2d.move_local_x(-160 * delta)
+		
+	if floor_sprite_2d.position.x <= -192:
+		floor_sprite_2d.position.x = -144
